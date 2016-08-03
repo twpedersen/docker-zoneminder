@@ -27,6 +27,8 @@ RUN chmod +x /tmp/ffmpeg.sh ; sync \
     && /bin/bash -c /tmp/ffmpeg.sh
 
 # to add mysqld deamon to runit
+# need to remove STRICT_TRANS_TABLES from sql_mode or zm crashes
+RUN sed -i "s/^sql_mode=.*/sql_mode=NO_ENGINE_SUBSTITUTION/g" /usr/my.cnf
 RUN mkdir -p /etc/service/mysqld /var/log/mysqld ; sync 
 RUN mkdir /etc/service/mysqld/log
 COPY mysqld.sh /etc/service/mysqld/run
